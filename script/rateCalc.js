@@ -94,24 +94,26 @@ function getSpotTicker(tradingPair){
 
 //Obetener valor de futuros
 function getCoinFutQuote(ticker) {
-    let futQuoteReq = fetch(urlFut+'/dapi/v1/ticker/price?symbol='+ticker);
-    futQuoteReq
-        .then(response => response.json())
-        .then(datos => {datos.forEach(data => {
-            let futSymbol = data.symbol;
-            let symbolEx = futSymbol.substr(futSymbol.indexOf('_')+1,futSymbol.length-futSymbol.indexOf('_'));
-            if(!symbolEx.includes('PERP')){
-                let tickerPair = data.ps;
-                let futPrice = data.price;
-                let period = calculatePeriod(futSymbol);
-                tickerSpot = getSpotTicker(tickerPair);
-                for (let i = 0; i < tickerSpot.length; i++) {
-                    getCoinSpotQuote(tickerSpot[i], futPrice, period, futSymbol);
+    setInterval(function (ticker) {
+        let futQuoteReq = fetch(urlFut+'/dapi/v1/ticker/price?symbol='+ticker);
+        futQuoteReq
+            .then(response => response.json())
+            .then(datos => {datos.forEach(data => {
+                let futSymbol = data.symbol;
+                let symbolEx = futSymbol.substr(futSymbol.indexOf('_')+1,futSymbol.length-futSymbol.indexOf('_'));
+                if(!symbolEx.includes('PERP')){
+                    let tickerPair = data.ps;
+                    let futPrice = data.price;
+                    let period = calculatePeriod(futSymbol);
+                    tickerSpot = getSpotTicker(tickerPair);
+                    for (let i = 0; i < tickerSpot.length; i++) {
+                        getCoinSpotQuote(tickerSpot[i], futPrice, period, futSymbol);
+                    };
                 };
-            };
-            });
-        })
-        .catch(error => console.error(error));
+                });
+            })
+            .catch(error => console.error(error));
+    }, 5000, [ticker])
 };
 
 
@@ -127,7 +129,7 @@ function getCoinSpotQuote(ticker, futPrice, period, symbol) {
         .catch(error => console.error(error));
 };
 
-setInterval(getCoinFutQuote(tickerFut),5000);
+getCoinFutQuote(tickerFut);
 
 /*
 function updateFutQuote(ticker) {
