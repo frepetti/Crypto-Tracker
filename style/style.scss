@@ -1,0 +1,21 @@
+.container{
+    .futRateCont{
+        .coinContTitles{
+            width: 50%;
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+        }
+        .coinContainer{
+            width: 50%;
+            display: flex;
+            flex-direction: column;
+            .coinHeader{
+                display: flex;
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+        }
+    }
+
+}
