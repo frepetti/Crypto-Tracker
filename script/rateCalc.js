@@ -113,7 +113,7 @@ function getCoinFutQuote(ticker) {
                 });
             })
             .catch(error => console.error(error));
-    }, 5000, [ticker])
+    }, 2000, [ticker])
 };
 
 
